@@ -14,7 +14,8 @@ const CONFIG = {
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=42+Riverside+Drive+New+York+NY',
     rsvpDeadline: 'June 10, 2026',
     whatsapp: '01234567890',
-    hashtag: '#YahyaAndKhadija2026',
+    instagram: 'yato_developer',
+    instagramLink: 'https://www.instagram.com/yato_developer/',
     introVideo: '',
 
     quote: {
@@ -23,9 +24,9 @@ const CONFIG = {
     },
 
     highlights: [
-        { icon: '💒', label: 'Ceremony', value: '5:00 PM' },
-        { icon: '🥂', label: 'Reception', value: '7:30 PM' },
-        { icon: '💌', label: 'RSVP by', value: 'June 1' },
+        { icon: '🌸', label: 'Ceremony', value: '5:00 PM' },
+        { icon: '🕊️', label: 'Reception', value: '7:30 PM' },
+        { icon: '💍', label: 'RSVP by', value: 'June 10' },
     ],
 
     timeline: [
@@ -218,7 +219,12 @@ function populatePage() {
 
     document.getElementById('footer-signoff').textContent =
         `With all our love — ${CONFIG.groomName} & ${CONFIG.brideName}`;
-    document.getElementById('hashtag').textContent = CONFIG.hashtag;
+    document.getElementById('hashtag').innerHTML = `
+        <div style="text-align: center; font-size: 0.85rem; opacity: 0.7; margin-top: 16px;">
+            Designed by <a href="${CONFIG.instagramLink}" target="_blank" rel="noopener" 
+                          style="color: inherit; text-decoration: underline;">@${CONFIG.instagram}</a>
+        </div>
+    `;
 
     document.getElementById('highlight-grid').innerHTML = CONFIG.highlights
         .map(
@@ -823,7 +829,7 @@ shareBtn.addEventListener('click', async () => {
 
     const shareData = {
         title: `${CONFIG.groomName} & ${CONFIG.brideName} — Wedding`,
-        text: `You're invited to our wedding! ${CONFIG.hashtag}`,
+        text: `You're invited to our wedding! Check out the designer: ${CONFIG.instagramLink}`,
         url: window.location.href,
     };
 
