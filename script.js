@@ -11,8 +11,6 @@ const CONFIG = {
 
     venueName: 'The Grand Pavilion',
     venueAddress: '42 Riverside Drive, New York, NY 10023',
-    dressCode: 'Soft formal — blush, ivory, cream & pastel florals',
-
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=42+Riverside+Drive+New+York+NY',
     rsvpDeadline: 'June 1, 2026',
     whatsapp: '15551234567',
@@ -27,7 +25,6 @@ const CONFIG = {
     highlights: [
         { icon: '💒', label: 'Ceremony', value: '5:00 PM' },
         { icon: '🥂', label: 'Reception', value: '7:30 PM' },
-        { icon: '🌸', label: 'Dress code', value: 'Soft formal' },
         { icon: '💌', label: 'RSVP by', value: 'June 1' },
     ],
 
@@ -84,7 +81,6 @@ const CONFIG = {
 const gate = document.getElementById('gate');
 const invite = document.getElementById('invite');
 const seal = document.getElementById('seal');
-const envelope = document.getElementById('envelope');
 const codeInputs = document.querySelectorAll('.code-digit');
 const codeInputsWrap = document.getElementById('code-inputs');
 const codeError = document.getElementById('code-error');
@@ -125,10 +121,6 @@ function initSparkles() {
         s.style.animationDuration = `${2 + Math.random() * 3}s`;
         wrap.appendChild(s);
     }
-}
-
-function initEnvelope() {
-    setTimeout(() => envelope?.classList.add('open'), 600);
 }
 
 function initIntroVideo() {
@@ -210,7 +202,6 @@ function populatePage() {
     document.getElementById('detail-date').textContent = CONFIG.detailDate;
     document.getElementById('detail-venue').textContent =
         `${CONFIG.venueName} — ${CONFIG.venueAddress}`;
-    document.getElementById('detail-dress').textContent = CONFIG.dressCode;
     document.getElementById('map-link').href = CONFIG.mapUrl;
 
     document.getElementById('note-text').innerHTML = CONFIG.note.replace(
@@ -249,8 +240,8 @@ function populatePage() {
     const slider = document.getElementById('story-slider');
     slider.innerHTML = img.story
         .map(
-            (item) => `
-        <figure class="story-slide">
+            (item, i) => `
+        <figure class="story-slide" style="--i:${i}">
             <img src="${item.src}" alt="${item.caption}" loading="lazy" decoding="async">
             <figcaption>${item.caption}</figcaption>
         </figure>`
@@ -271,7 +262,7 @@ function populatePage() {
     mosaic.innerHTML = img.gallery
         .map(
             (src, i) => `
-        <button type="button" class="mosaic-item mosaic-item--${(i % 6) + 1}" data-src="${src}" aria-label="View photo ${i + 1}">
+        <button type="button" class="mosaic-item mosaic-item--${(i % 6) + 1}" style="--i:${i}" data-src="${src}" aria-label="View photo ${i + 1}">
             <img src="${src}" alt="Wedding memory ${i + 1}" loading="lazy" decoding="async">
         </button>`
         )
@@ -413,23 +404,47 @@ function burstConfetti() {
 
 populatePage();
 initSparkles();
-initEnvelope();
 initIntroVideo();
 initHeroParallax();
 initBackTop();
 
-seal.addEventListener('click', () => codeInputs[0]?.focus());
+function getEnteredCode() {
+    return [...codeInputs].map((el) => el.value).join('');
+}
+
+function updateCodeUI() {
+    const code = getEnteredCode();
+    seal.classList.toggle('seal--ready', code.length === 4);
+    codeInputs.forEach((el) => {
+        el.classList.toggle('filled', el.value.length > 0);
+    });
+}
+
+seal.addEventListener('click', () => {
+    seal.classList.add('seal--pressed');
+    setTimeout(() => seal.classList.remove('seal--pressed'), 180);
+
+    const code = getEnteredCode();
+    if (code.length === 4) tryUnlock(code);
+    else codeInputs[code.length]?.focus() || codeInputs[0]?.focus();
+});
+
+document.getElementById('code-form')?.addEventListener('submit', (e) => e.preventDefault());
 
 codeInputs.forEach((input, i) => {
     input.addEventListener('input', (e) => {
         const v = e.target.value.replace(/\D/g, '');
         e.target.value = v.slice(-1);
-        if (v && i < codeInputs.length - 1) codeInputs[i + 1].focus();
-        const code = [...codeInputs].map((el) => el.value).join('');
-        if (code.length === 4) tryUnlock(code);
+        if (v) {
+            e.target.classList.add('pop');
+            setTimeout(() => e.target.classList.remove('pop'), 320);
+            if (i < codeInputs.length - 1) codeInputs[i + 1].focus();
+        }
+        updateCodeUI();
     });
 
     input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') e.preventDefault();
         if (e.key === 'Backspace' && !input.value && i > 0) codeInputs[i - 1].focus();
     });
 
@@ -439,19 +454,25 @@ codeInputs.forEach((input, i) => {
         pasted.split('').forEach((ch, j) => {
             if (codeInputs[j]) codeInputs[j].value = ch;
         });
-        if (pasted.length === 4) tryUnlock(pasted);
-        else codeInputs[Math.min(pasted.length, 3)]?.focus();
+        codeInputs[Math.min(pasted.length, 3)]?.focus();
+        updateCodeUI();
     });
 });
+
+updateCodeUI();
 
 function tryUnlock(code) {
     if (unlocked) return;
 
     if (code === CONFIG.secretCode) {
         unlocked = true;
-        seal.classList.add('broken');
+        seal.classList.remove('seal--ready');
+        seal.classList.add('unlocking');
+        codeInputsWrap.classList.add('code-success');
         codeError.classList.remove('show');
         document.body.classList.add('unlocked');
+
+        setTimeout(() => seal.classList.add('broken'), 480);
 
         setTimeout(() => {
             gate.classList.add('exit');
@@ -465,19 +486,17 @@ function tryUnlock(code) {
                 initReveal();
                 burstPetals();
                 burstConfetti();
-
-                document.querySelectorAll('.timer-cell').forEach((cell, i) => {
-                    cell.style.animationDelay = `${i * 0.08}s`;
-                    cell.classList.add('timer-cell--in');
-                });
             }, 700);
         }, 500);
     } else {
+        seal.classList.add('seal--nope');
+        setTimeout(() => seal.classList.remove('seal--nope'), 450);
         codeError.classList.add('show');
         codeInputsWrap.classList.add('shake');
         codeInputs.forEach((el) => {
             el.value = '';
         });
+        updateCodeUI();
         codeInputs[0].focus();
         setTimeout(() => {
             codeInputsWrap.classList.remove('shake');
@@ -618,6 +637,14 @@ function burstPetals() {
 }
 
 function initReveal() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const blocks = document.querySelectorAll('.reveal');
+
+    if (prefersReduced) {
+        blocks.forEach((b) => b.classList.add('visible'));
+        return;
+    }
+
     const obs = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -627,9 +654,10 @@ function initReveal() {
                 }
             });
         },
-        { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+        { threshold: 0.08, rootMargin: '0px 0px -50px 0px' }
     );
-    document.querySelectorAll('.reveal').forEach((b) => obs.observe(b));
+
+    blocks.forEach((b) => obs.observe(b));
 }
 
 rsvpBtn.addEventListener('click', () => {
