@@ -94,6 +94,13 @@ const backTop = document.getElementById('back-top');
 const SHARE_LABEL = 'Share invitation';
 const COPIED_LABEL = 'Link copied ✓';
 
+const UNLOCK_TIMING = {
+    sealBreak: 750,
+    curtainClose: 1650,
+    curtainHold: 500,
+    curtainOpen: 1750,
+};
+
 let unlocked = false;
 let confettiPieces = [];
 
@@ -280,6 +287,8 @@ function populatePage() {
         </li>`
         )
         .join('');
+
+    applyMotionHover();
 }
 
 function initStorySlider(slider, dotsWrap) {
@@ -362,6 +371,84 @@ function initHeroParallax() {
     );
 }
 
+function refreshDigitMotion() {
+    codeInputs.forEach((input) => {
+        const focused = document.activeElement === input;
+        const hasVal = input.value.length > 0;
+
+        input.classList.remove('is-lifted', 'is-filled-rest');
+        if (focused) input.classList.add('is-lifted');
+        else if (hasVal) input.classList.add('is-filled-rest');
+
+        input.classList.toggle('filled', hasVal);
+    });
+}
+
+function initGateFocus() {
+    if (!codeInputsWrap) return;
+
+    codeInputsWrap.addEventListener('animationend', (e) => {
+        if (e.animationName === 'codePanelIn') {
+            codeInputsWrap.classList.add('is-shown');
+        }
+    });
+
+    codeInputs.forEach((input) => {
+        input.addEventListener('animationend', (e) => {
+            if (e.animationName === 'smoothFadeIn') {
+                input.classList.add('is-shown');
+            }
+        });
+
+        input.addEventListener('pointerdown', () => {
+            codeInputsWrap.classList.add('code-inputs--active');
+        });
+
+        input.addEventListener('focus', () => {
+            codeInputsWrap.classList.add('code-inputs--active');
+            requestAnimationFrame(() => refreshDigitMotion());
+        });
+
+        input.addEventListener('blur', () => {
+            requestAnimationFrame(() => {
+                refreshDigitMotion();
+                if (!codeInputsWrap.contains(document.activeElement)) {
+                    codeInputsWrap.classList.remove('code-inputs--active');
+                }
+            });
+        });
+    });
+
+    // Disable removing ignite class so glow stays forever
+    /*
+    seal?.addEventListener('animationend', (e) => {
+        if (e.animationName === 'sealIgnite') {
+            seal.classList.remove('seal--ignite');
+        }
+    });
+    */
+
+    setTimeout(() => {
+        seal?.classList.add('is-shown');
+        codeInputsWrap.classList.add('is-shown');
+        codeInputs.forEach((input) => input.classList.add('is-shown'));
+    }, 2000);
+}
+
+function applyMotionHover() {
+    document
+        .querySelectorAll(
+            '.card, .btn-primary, .btn-ghost, .highlight-item, .timeline-card, .story-chapter, .mosaic-item, .polaroid, .story-slide, .verse blockquote, .note-rings, .back-top, .story-dot'
+        )
+        .forEach((el) => el.classList.add('motion-hover'));
+}
+
+function pulseDigit(input) {
+    input.classList.add('is-tap');
+    clearTimeout(input._tapTimer);
+    input._tapTimer = setTimeout(() => input.classList.remove('is-tap'), 400);
+}
+
 function initBackTop() {
     window.addEventListener(
         'scroll',
@@ -375,9 +462,32 @@ function initBackTop() {
     });
 }
 
-function playCurtain() {
-    curtain.classList.add('open');
-    setTimeout(() => curtain.classList.add('done'), 1200);
+function playCurtainTransition(onClosed) {
+    curtain.classList.remove('done', 'is-closing', 'is-closed', 'is-opening', 'open');
+    curtain.classList.add('is-active');
+
+    requestAnimationFrame(() => {
+        curtain.classList.add('is-closing');
+    });
+
+    setTimeout(() => {
+        curtain.classList.remove('is-closing');
+        curtain.classList.add('is-closed');
+        onClosed?.();
+    }, UNLOCK_TIMING.curtainClose);
+
+    const openAt = UNLOCK_TIMING.curtainClose + UNLOCK_TIMING.curtainHold;
+
+    setTimeout(() => {
+        curtain.classList.add('is-opening');
+        burstPetals();
+        burstConfetti();
+    }, openAt);
+
+    setTimeout(() => {
+        curtain.classList.remove('is-active', 'is-closed', 'is-opening');
+        curtain.classList.add('done');
+    }, openAt + UNLOCK_TIMING.curtainOpen);
 }
 
 function burstConfetti() {
@@ -407,6 +517,7 @@ initSparkles();
 initIntroVideo();
 initHeroParallax();
 initBackTop();
+initGateFocus();
 
 function getEnteredCode() {
     return [...codeInputs].map((el) => el.value).join('');
@@ -414,19 +525,39 @@ function getEnteredCode() {
 
 function updateCodeUI() {
     const code = getEnteredCode();
-    seal.classList.toggle('seal--ready', code.length === 4);
-    codeInputs.forEach((el) => {
-        el.classList.toggle('filled', el.value.length > 0);
-    });
+    const len = code.length;
+    const wasReady = seal.classList.contains('seal--ready');
+
+    seal.style.setProperty('--seal-charge', String(len / 4));
+    seal.classList.toggle('seal--charging', len > 0 && len < 4);
+    seal.classList.toggle('seal--ready', len === 4);
+
+    if (len === 4 && !wasReady) {
+        seal.classList.remove('seal--ignite');
+        void seal.offsetWidth;
+        seal.classList.add('seal--ignite');
+        codeInputsWrap.classList.add('code-complete', 'code-success');
+    }
+
+    if (len < 4) {
+        seal.classList.remove('seal--ignite');
+        codeInputsWrap.classList.remove('code-complete', 'code-success');
+    }
+
+    refreshDigitMotion();
 }
 
 seal.addEventListener('click', () => {
-    seal.classList.add('seal--pressed');
-    setTimeout(() => seal.classList.remove('seal--pressed'), 180);
-
     const code = getEnteredCode();
-    if (code.length === 4) tryUnlock(code);
-    else codeInputs[code.length]?.focus() || codeInputs[0]?.focus();
+
+    if (code.length !== 4) {
+        seal.classList.add('seal--pressed');
+        setTimeout(() => seal.classList.remove('seal--pressed'), 180);
+        codeInputs[code.length]?.focus() || codeInputs[0]?.focus();
+        return;
+    }
+
+    tryUnlock(code);
 });
 
 document.getElementById('code-form')?.addEventListener('submit', (e) => e.preventDefault());
@@ -436,8 +567,7 @@ codeInputs.forEach((input, i) => {
         const v = e.target.value.replace(/\D/g, '');
         e.target.value = v.slice(-1);
         if (v) {
-            e.target.classList.add('pop');
-            setTimeout(() => e.target.classList.remove('pop'), 320);
+            pulseDigit(e.target);
             if (i < codeInputs.length - 1) codeInputs[i + 1].focus();
         }
         updateCodeUI();
@@ -452,7 +582,10 @@ codeInputs.forEach((input, i) => {
         e.preventDefault();
         const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 4);
         pasted.split('').forEach((ch, j) => {
-            if (codeInputs[j]) codeInputs[j].value = ch;
+            if (codeInputs[j]) {
+                codeInputs[j].value = ch;
+                if (ch) pulseDigit(codeInputs[j]);
+            }
         });
         codeInputs[Math.min(pasted.length, 3)]?.focus();
         updateCodeUI();
@@ -460,34 +593,40 @@ codeInputs.forEach((input, i) => {
 });
 
 updateCodeUI();
+refreshDigitMotion();
 
 function tryUnlock(code) {
     if (unlocked) return;
 
     if (code === CONFIG.secretCode) {
         unlocked = true;
-        seal.classList.remove('seal--ready');
-        seal.classList.add('unlocking');
+        // Don't add seal--opening to prevent style changes
+        // seal.classList.add('seal--opening');
         codeInputsWrap.classList.add('code-success');
         codeError.classList.remove('show');
         document.body.classList.add('unlocked');
 
-        setTimeout(() => seal.classList.add('broken'), 480);
-
         setTimeout(() => {
-            gate.classList.add('exit');
-            playCurtain();
-
-            setTimeout(() => {
-                invite.classList.remove('hidden');
+            playCurtainTransition(() => {
+                seal.classList.add('broken');
                 gate.classList.add('hidden');
+                invite.classList.remove('hidden');
+                invite.classList.add('invite--live');
+                window.scrollTo(0, 0);
                 startPetals();
                 startCountdown();
-                initReveal();
-                burstPetals();
-                burstConfetti();
-            }, 700);
-        }, 500);
+                
+                // Reset all reveals to be hidden first, then init
+                const reveals = document.querySelectorAll('.reveal');
+                reveals.forEach((el) => {
+                    el.classList.remove('visible');
+                });
+                setTimeout(() => {
+                    initReveal();
+                }, 100);
+                applyMotionHover();
+            });
+        }, UNLOCK_TIMING.sealBreak);
     } else {
         seal.classList.add('seal--nope');
         setTimeout(() => seal.classList.remove('seal--nope'), 450);
@@ -654,7 +793,7 @@ function initReveal() {
                 }
             });
         },
-        { threshold: 0.08, rootMargin: '0px 0px -50px 0px' }
+        { threshold: 0.08, rootMargin: '0px 0px -10% 0px' }
     );
 
     blocks.forEach((b) => obs.observe(b));

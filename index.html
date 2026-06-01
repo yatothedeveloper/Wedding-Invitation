@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=15">
 </head>
 <body>
 
@@ -28,8 +28,14 @@
     </section>
 
     <div id="curtain" class="curtain" aria-hidden="true">
-        <div class="curtain-panel curtain-panel--left"></div>
-        <div class="curtain-panel curtain-panel--right"></div>
+        <div class="curtain-panel curtain-panel--left">
+            <span class="curtain-edge" aria-hidden="true"></span>
+            <span class="curtain-sheen" aria-hidden="true"></span>
+        </div>
+        <div class="curtain-panel curtain-panel--right">
+            <span class="curtain-edge" aria-hidden="true"></span>
+            <span class="curtain-sheen" aria-hidden="true"></span>
+        </div>
     </div>
 
     <div class="sparkles" id="sparkles" aria-hidden="true"></div>
@@ -47,7 +53,7 @@
         <div class="gate-bloom gate-bloom--right" aria-hidden="true"></div>
 
         <div class="gate-card gate-enter">
-            <div class="envelope" id="envelope" aria-hidden="true">
+            <div class="envelope motion-hover" id="envelope" aria-hidden="true">
                 <div class="envelope-scene">
                     <div class="env-flap-back"></div>
                     <div class="env-body"></div>
@@ -59,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="gate-photo">
+            <div class="gate-photo motion-hover">
                 <img id="gate-couple-img" src="" alt="James and Olivia" loading="eager">
                 <span class="gate-photo-shine" aria-hidden="true"></span>
                 <span class="gate-photo-frame"></span>
@@ -71,6 +77,8 @@
                 <p class="gate-lead">Enter the secret code · tap the seal to open</p>
 
                 <button type="button" class="seal" id="seal" aria-label="Open invitation with secret code">
+                    <span class="seal-glow seal-glow--1" aria-hidden="true"></span>
+                    <span class="seal-glow seal-glow--2" aria-hidden="true"></span>
                     <span class="seal-shimmer" aria-hidden="true"></span>
                     <span class="seal-ring"></span>
                     <span class="seal-wax"><span class="seal-monogram">J &amp; O</span></span>
@@ -128,17 +136,17 @@
             <div class="scroll-cue" aria-hidden="true"><span></span></div>
         </header>
 
-        <div class="rose-divider reveal" aria-hidden="true">
+        <div class="rose-divider reveal reveal-left" aria-hidden="true">
             <img src="" alt="" class="rose-strip" id="rose-strip-1" loading="lazy">
         </div>
 
-        <section class="highlights block reveal">
+        <section class="highlights block reveal reveal-right">
             <div class="highlight-grid" id="highlight-grid"></div>
         </section>
 
         <div class="section-divider" aria-hidden="true"><span></span></div>
 
-        <section class="story block reveal">
+        <section class="story block reveal reveal-left">
             <div class="section-head">
                 <span class="section-ornament" aria-hidden="true">✦</span>
                 <h3 class="section-title">Our love story</h3>
@@ -157,7 +165,7 @@
 
         <div class="section-divider" aria-hidden="true"><span></span></div>
 
-        <section class="verse block reveal">
+        <section class="verse block reveal reveal-right">
             <div class="verse-roses" aria-hidden="true">
                 <img id="verse-rose-left" src="" alt="" loading="lazy">
                 <img id="verse-rose-right" src="" alt="" loading="lazy">
@@ -168,7 +176,7 @@
             </blockquote>
         </section>
 
-        <section class="countdown block reveal">
+        <section class="countdown block reveal reveal-left">
             <div class="section-head section-head--compact">
                 <span class="section-ornament" aria-hidden="true">✦</span>
                 <h3 class="section-title">Counting down to “I do”</h3>
@@ -185,7 +193,7 @@
             </div>
         </section>
 
-        <section class="timeline block reveal">
+        <section class="timeline block reveal reveal-right">
             <div class="section-head section-head--compact">
                 <span class="section-ornament" aria-hidden="true">✦</span>
                 <h3 class="section-title">The day at a glance</h3>
@@ -194,7 +202,7 @@
             <ol class="timeline-cards" id="timeline-list"></ol>
         </section>
 
-        <section class="gallery block reveal">
+        <section class="gallery block reveal reveal-left">
             <div class="section-head">
                 <span class="section-ornament" aria-hidden="true">✦</span>
                 <h3 class="section-title">Moments we treasure</h3>
@@ -204,7 +212,7 @@
             <div class="gallery-mosaic" id="gallery-mosaic"></div>
         </section>
 
-        <section class="details block reveal">
+        <section class="details block reveal reveal-right">
             <div class="section-head section-head--compact">
                 <span class="section-ornament" aria-hidden="true">✦</span>
                 <h3 class="section-title">Celebration details</h3>
@@ -225,17 +233,17 @@
             </div>
         </section>
 
-        <section class="note block reveal">
+        <section class="note block reveal reveal-left">
             <img id="note-rings" src="" alt="Wedding rings" class="note-rings reveal-child" style="--i:0" loading="lazy">
             <p id="note-text" class="reveal-child" style="--i:1"></p>
         </section>
 
-        <section class="rsvp block reveal">
+        <section class="rsvp block reveal reveal-right">
             <button type="button" class="btn-primary reveal-child" style="--i:0" id="rsvp-btn">RSVP on WhatsApp</button>
             <button type="button" class="btn-ghost reveal-child" style="--i:1" id="share-btn">Share invitation</button>
         </section>
 
-        <footer class="footer reveal">
+        <footer class="footer reveal reveal-left">
             <img id="footer-rose" src="" alt="" class="footer-rose" loading="lazy">
             <p id="footer-signoff"></p>
             <p class="hashtag" id="hashtag"></p>
@@ -249,6 +257,6 @@
 
     <button type="button" class="back-top hidden" id="back-top" aria-label="Back to top">↑</button>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=15"></script>
 </body>
 </html>
