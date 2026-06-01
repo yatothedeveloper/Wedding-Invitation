@@ -562,10 +562,28 @@ body.unlocked .ambient-blob {
     z-index: 0;
 }
 
-.seal-glow--2 {
-    inset: -14px;
-    border-width: 1px;
-    border-color: rgba(201, 120, 136, 0.35);
+.seal.seal--ready .seal-glow,
+.seal.seal--ignite .seal-glow,
+.seal.seal--opening .seal-glow {
+    opacity: 1 !important;
+    animation: sealGlowBreath 2.6s ease-in-out infinite !important;
+}
+
+.seal.seal--ready .seal-glow--2,
+.seal.seal--ignite .seal-glow--2,
+.seal.seal--opening .seal-glow--2 {
+    animation-delay: 0.65s !important;
+}
+
+@keyframes sealGlowBreath {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
 }
 
 .seal:hover:not(.unlocking):not(.broken):not(.seal--ready) {
@@ -598,10 +616,13 @@ body.unlocked .ambient-blob {
 
 .seal-monogram {
     font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
     letter-spacing: 0.06em;
+    line-height: 1;
+    margin-top: -4px;
+    margin-left: 3px;
 }
 
 .seal-crack {
@@ -703,6 +724,9 @@ body.unlocked .ambient-blob {
     z-index: 1;
     width: 50px;
     height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-family: var(--font-display);
     font-size: 1.5rem;
@@ -763,11 +787,11 @@ body.unlocked .ambient-blob {
 }
 
 .code-digit.is-lifted {
-    --digit-y: -18px;
+    --digit-y: -6px;
     border-color: var(--rose-soft);
     box-shadow:
         0 0 0 3px rgba(201, 120, 136, 0.35),
-        0 16px 36px rgba(201, 120, 136, 0.3);
+        0 12px 24px rgba(201, 120, 136, 0.3);
 }
 
 .code-digit.is-lifted::after {
@@ -792,7 +816,7 @@ body.unlocked .ambient-blob {
 }
 
 .code-digit.is-tap.is-lifted {
-    --digit-y: -20px;
+    --digit-y: -8px;
 }
 
 .code-inputs.code-success {
@@ -935,17 +959,6 @@ body.unlocked .ambient-blob {
     }
 }
 
-@keyframes sealGlowBreath {
-    0%, 100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.78;
-        transform: scale(1.1);
-    }
-}
-
 @keyframes sealRingPulse {
     0%, 100% {
         opacity: 0.7;
@@ -1002,16 +1015,6 @@ body.unlocked .ambient-blob {
         0 12px 36px rgba(201, 120, 136, 0.5);
 }
 
-.seal.seal--ready.seal--opening .seal-glow--1,
-.seal.seal--ready.seal--opening .seal-glow--2 {
-    opacity: 1 !important;
-    transition: none !important;
-    animation: sealGlowBreath 2.6s ease-in-out infinite !important;
-}
-.seal.seal--ready.seal--opening .seal-glow--2 {
-    animation-delay: 0.65s !important;
-}
-
 .seal.seal--nope {
     animation: sealNope 0.45s ease;
 }
@@ -1044,6 +1047,10 @@ body.unlocked .ambient-blob {
 }
 
 /* ═══════════ INVITE ═══════════ */
+.invite:not(.invite--live) .reveal {
+    display: none !important;
+}
+
 .invite.invite--live {
     opacity: 0;
     animation: smoothFadeIn 1.2s var(--ease-fade) both;
@@ -1110,54 +1117,15 @@ body.unlocked .ambient-blob {
     box-shadow: 12px 0 0 var(--blush-deep), -12px 0 0 var(--blush-deep);
 }
 
-@keyframes revealInLeft {
-    from {
-        opacity: 0;
-        transform: translate3d(-120px, 50px, 0) rotate(-2deg);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-}
-
-@keyframes revealInRight {
-    from {
-        opacity: 0;
-        transform: translate3d(120px, 50px, 0) rotate(2deg);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-}
-
-@keyframes revealInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 80px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-}
-
 .reveal {
     opacity: 0;
-    will-change: opacity, transform;
+    transform: translateY(150px) scale(0.9);
+    transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.reveal.reveal-left.visible {
-    animation: revealInLeft 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.reveal.reveal-right.visible {
-    animation: revealInRight 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.reveal:not(.reveal-left):not(.reveal-right).visible {
-    animation: revealInUp 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
 }
 
 .reveal-child {
@@ -2373,9 +2341,9 @@ body.unlocked .ambient-blob {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 52%;
+    width: 55%;
     overflow: hidden;
-    transition: transform 1.65s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
     will-change: transform;
 }
 

@@ -96,9 +96,9 @@ const COPIED_LABEL = 'Link copied ✓';
 
 const UNLOCK_TIMING = {
     sealBreak: 750,
-    curtainClose: 1650,
-    curtainHold: 500,
-    curtainOpen: 1750,
+    curtainClose: 900,
+    curtainHold: 300,
+    curtainOpen: 1000,
 };
 
 let unlocked = false;
@@ -616,14 +616,18 @@ function tryUnlock(code) {
                 startPetals();
                 startCountdown();
                 
-                // Reset all reveals to be hidden first, then init
+                console.log("=== MAKING REVEALS VISIBLE (DISPLAY BLOCK) ===");
                 const reveals = document.querySelectorAll('.reveal');
                 reveals.forEach((el) => {
                     el.classList.remove('visible');
+                    console.log("Reset reveal:", el);
                 });
+                
+                // Small delay to let invite become live first
                 setTimeout(() => {
+                    console.log("=== CALLING INIT REVEAL ===");
                     initReveal();
-                }, 100);
+                }, 500);
                 applyMotionHover();
             });
         }, UNLOCK_TIMING.sealBreak);
@@ -776,27 +780,30 @@ function burstPetals() {
 }
 
 function initReveal() {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    console.log("=== MANUAL INIT REVEAL ===");
     const blocks = document.querySelectorAll('.reveal');
+    console.log("Reveal blocks found:", blocks.length);
 
-    if (prefersReduced) {
-        blocks.forEach((b) => b.classList.add('visible'));
-        return;
+    function checkScroll() {
+        const windowHeight = window.innerHeight;
+        blocks.forEach((block) => {
+            if (block.classList.contains('visible')) return;
+
+            const rect = block.getBoundingClientRect();
+            console.log("Checking block:", rect.top, windowHeight);
+            
+            if (rect.top < windowHeight - 100) {
+                block.classList.add('visible');
+                console.log("Added visible to:", block);
+            }
+        });
     }
 
-    const obs = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    obs.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.08, rootMargin: '0px 0px -10% 0px' }
-    );
-
-    blocks.forEach((b) => obs.observe(b));
+    window.addEventListener('scroll', checkScroll);
+    checkScroll(); // Check immediately
+    
+    // Also check every 100ms to be 100% sure
+    setInterval(checkScroll, 100);
 }
 
 rsvpBtn.addEventListener('click', () => {
