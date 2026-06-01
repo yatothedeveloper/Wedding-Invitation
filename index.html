@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wedding invitation for James &amp; Olivia">
+    <title>James &amp; Olivia — Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section id="intro-video" class="intro-video hidden" aria-label="Invitation video">
+        <video id="intro-vid" class="intro-vid" playsinline muted preload="metadata"></video>
+        <div class="intro-overlay"></div>
+        <div class="intro-ui">
+            <button type="button" class="intro-play" id="intro-play" aria-label="Play video">
+                <span class="intro-play-icon"></span>
+            </button>
+            <p class="intro-caption">Our wedding invitation</p>
+            <div class="intro-actions">
+                <button type="button" class="btn-intro-ghost" id="intro-skip">Skip</button>
+                <button type="button" class="btn-intro-primary" id="intro-continue">Open invitation</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="curtain" class="curtain" aria-hidden="true">
+        <div class="curtain-panel curtain-panel--left"></div>
+        <div class="curtain-panel curtain-panel--right"></div>
+    </div>
+
+    <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+
+    <div class="ambient" aria-hidden="true">
+        <span class="ambient-blob ambient-blob--1"></span>
+        <span class="ambient-blob ambient-blob--2"></span>
+        <span class="ambient-blob ambient-blob--3"></span>
+    </div>
+    <canvas id="petals" aria-hidden="true"></canvas>
+
+    <section id="gate" class="gate">
+        <div class="gate-bg" id="gate-bg" aria-hidden="true"></div>
+        <div class="gate-bloom gate-bloom--left" aria-hidden="true"></div>
+        <div class="gate-bloom gate-bloom--right" aria-hidden="true"></div>
+
+        <div class="gate-card gate-enter">
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-letter">
+                        <span class="letter-heart">♥</span>
+                        <p>You're invited</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gate-photo">
+                <img id="gate-couple-img" src="" alt="James and Olivia" loading="eager">
+                <span class="gate-photo-shine" aria-hidden="true"></span>
+                <span class="gate-photo-frame"></span>
+            </div>
+
+            <div class="gate-content">
+                <p class="gate-eyebrow">Wedding invitation</p>
+                <h1 class="gate-title">Open our love letter</h1>
+                <p class="gate-lead">Tap the seal · enter the secret code</p>
+
+                <button type="button" class="seal" id="seal" aria-label="Focus code entry">
+                    <span class="seal-shimmer" aria-hidden="true"></span>
+                    <span class="seal-ring"></span>
+                    <span class="seal-wax"><span class="seal-monogram">J &amp; O</span></span>
+                    <span class="seal-crack" aria-hidden="true"></span>
+                </button>
+
+                <form class="code-form" id="code-form" autocomplete="off">
+                    <div class="code-inputs" id="code-inputs">
+                        <input type="text" inputmode="numeric" maxlength="1" class="code-digit" aria-label="Digit 1">
+                        <input type="text" inputmode="numeric" maxlength="1" class="code-digit" aria-label="Digit 2">
+                        <input type="text" inputmode="numeric" maxlength="1" class="code-digit" aria-label="Digit 3">
+                        <input type="text" inputmode="numeric" maxlength="1" class="code-digit" aria-label="Digit 4">
+                    </div>
+                    <p class="code-hint" id="code-hint"></p>
+                    <p class="code-error" id="code-error" role="alert">Incorrect code — try again</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <main id="invite" class="invite hidden">
+
+        <header class="hero">
+            <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+            <div class="hero-overlay" aria-hidden="true"></div>
+            <div class="hero-sparkle" aria-hidden="true"></div>
+
+            <div class="hero-polaroids">
+                <figure class="polaroid polaroid--groom float-delay-1">
+                    <img id="img-groom" src="" alt="James" loading="lazy">
+                    <figcaption class="name-groom">James</figcaption>
+                </figure>
+                <figure class="polaroid polaroid--center float-delay-2">
+                    <img id="img-couple" src="" alt="James and Olivia together" loading="lazy">
+                    <figcaption>Forever starts here</figcaption>
+                </figure>
+                <figure class="polaroid polaroid--bride float-delay-3">
+                    <img id="img-bride" src="" alt="Olivia" loading="lazy">
+                    <figcaption class="name-bride">Olivia</figcaption>
+                </figure>
+            </div>
+
+            <div class="hero-text hero-text--animate">
+                <span class="save-badge pulse-soft">Save the Date</span>
+                <p class="hero-prelude">Together with their families</p>
+                <p class="hero-tag">joyfully invite you to celebrate their wedding</p>
+                <div class="hero-names">
+                    <span class="name name-groom">James</span>
+                    <span class="amp">&amp;</span>
+                    <span class="name name-bride">Olivia</span>
+                </div>
+                <p class="hero-date" id="hero-date"></p>
+            </div>
+
+            <div class="scroll-cue" aria-hidden="true"><span></span></div>
+        </header>
+
+        <div class="rose-divider" aria-hidden="true">
+            <img src="" alt="" class="rose-strip" id="rose-strip-1" loading="lazy">
+        </div>
+
+        <section class="highlights block reveal">
+            <div class="highlight-grid" id="highlight-grid"></div>
+        </section>
+
+        <div class="section-divider" aria-hidden="true"><span></span></div>
+
+        <section class="story block reveal">
+            <div class="section-head">
+                <span class="section-ornament" aria-hidden="true">✦</span>
+                <h3 class="section-title">Our love story</h3>
+                <div class="section-line" aria-hidden="true"></div>
+                <p class="section-sub">Three chapters, one beautiful ending</p>
+            </div>
+            <div class="story-layout">
+                <ol class="story-chapters" id="story-chapters"></ol>
+                <div class="story-slider-wrap">
+                    <div class="story-slider" id="story-slider" tabindex="0" aria-label="Love story photos"></div>
+                    <div class="story-dots" id="story-dots" role="tablist"></div>
+                    <p class="story-swipe-hint" aria-hidden="true">Swipe ← →</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider" aria-hidden="true"><span></span></div>
+
+        <section class="verse block reveal">
+            <div class="verse-roses" aria-hidden="true">
+                <img id="verse-rose-left" src="" alt="" loading="lazy">
+                <img id="verse-rose-right" src="" alt="" loading="lazy">
+            </div>
+            <blockquote>
+                <p id="quote-text"></p>
+                <cite id="quote-cite"></cite>
+            </blockquote>
+        </section>
+
+        <section class="countdown block reveal">
+            <div class="section-head section-head--compact">
+                <span class="section-ornament" aria-hidden="true">✦</span>
+                <h3 class="section-title">Counting down to “I do”</h3>
+                <div class="section-line" aria-hidden="true"></div>
+            </div>
+            <div class="countdown-visual">
+                <img id="countdown-rose" src="" alt="" class="countdown-rose-img" loading="lazy">
+            </div>
+            <div class="timer">
+                <div class="timer-cell"><span id="days">00</span><small>Days</small></div>
+                <div class="timer-cell"><span id="hours">00</span><small>Hours</small></div>
+                <div class="timer-cell"><span id="minutes">00</span><small>Minutes</small></div>
+                <div class="timer-cell"><span id="seconds">00</span><small>Seconds</small></div>
+            </div>
+        </section>
+
+        <section class="timeline block reveal">
+            <div class="section-head section-head--compact">
+                <span class="section-ornament" aria-hidden="true">✦</span>
+                <h3 class="section-title">The day at a glance</h3>
+                <div class="section-line" aria-hidden="true"></div>
+            </div>
+            <ol class="timeline-cards" id="timeline-list"></ol>
+        </section>
+
+        <section class="gallery block reveal">
+            <div class="section-head">
+                <span class="section-ornament" aria-hidden="true">✦</span>
+                <h3 class="section-title">Moments we treasure</h3>
+                <div class="section-line" aria-hidden="true"></div>
+                <p class="section-sub">Tap a photo to enlarge</p>
+            </div>
+            <div class="gallery-mosaic" id="gallery-mosaic"></div>
+        </section>
+
+        <section class="details block reveal">
+            <div class="section-head section-head--compact">
+                <span class="section-ornament" aria-hidden="true">✦</span>
+                <h3 class="section-title">Celebration details</h3>
+                <div class="section-line" aria-hidden="true"></div>
+            </div>
+            <div class="cards">
+                <article class="card card--img">
+                    <img id="card-date-img" src="" alt="Wedding table" loading="lazy">
+                    <span class="card-label">Date</span>
+                    <p id="detail-date"></p>
+                </article>
+                <article class="card card--img">
+                    <img id="card-venue-img" src="" alt="Wedding venue" loading="lazy">
+                    <span class="card-label">Venue</span>
+                    <p id="detail-venue"></p>
+                    <a id="map-link" href="#" target="_blank" rel="noopener">Open in Maps</a>
+                </article>
+                <article class="card">
+                    <span class="card-label">Dress code</span>
+                    <p id="detail-dress"></p>
+                </article>
+            </div>
+        </section>
+
+        <section class="note block reveal">
+            <img id="note-rings" src="" alt="Wedding rings" class="note-rings" loading="lazy">
+            <p id="note-text"></p>
+        </section>
+
+        <section class="rsvp block reveal">
+            <button type="button" class="btn-primary" id="rsvp-btn">RSVP on WhatsApp</button>
+            <button type="button" class="btn-ghost" id="share-btn">Share invitation</button>
+        </section>
+
+        <footer class="footer">
+            <img id="footer-rose" src="" alt="" class="footer-rose" loading="lazy">
+            <p id="footer-signoff"></p>
+            <p class="hashtag" id="hashtag"></p>
+        </footer>
+    </main>
+
+    <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Photo preview">
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <button type="button" class="back-top hidden" id="back-top" aria-label="Back to top">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
