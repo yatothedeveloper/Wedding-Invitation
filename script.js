@@ -2,19 +2,19 @@ const CONFIG = {
     secretCode: '0620',
     codeHint: 'Hint: our engagement date — 06 / 20',
 
-    weddingDate: '2026-06-20T17:00:00',
-    groomName: 'James',
-    brideName: 'Olivia',
+    weddingDate: '2026-06-10T14:00:00+02:00',
+    groomName: 'Yahya',
+    brideName: 'Khadija',
 
-    heroDateLine: 'Saturday · June 20, 2026',
-    detailDate: 'Saturday, June 20, 2026',
+    heroDateLine: 'Wednesday · June 10, 2026',
+    detailDate: 'Wednesday, June 10, 2026',
 
     venueName: 'The Grand Pavilion',
     venueAddress: '42 Riverside Drive, New York, NY 10023',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=42+Riverside+Drive+New+York+NY',
-    rsvpDeadline: 'June 1, 2026',
-    whatsapp: '15551234567',
-    hashtag: '#JamesAndOlivia2026',
+    rsvpDeadline: 'June 10, 2026',
+    whatsapp: '01234567890',
+    hashtag: '#YahyaAndKhadija2026',
     introVideo: '',
 
     quote: {
@@ -45,35 +45,35 @@ const CONFIG = {
 
     images: {
         gateBg: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1920&q=80',
-        gateCouple: 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800&q=80',
+        gateCouple: 'https://i.pinimg.com/736x/fd/e4/d7/fde4d766a43ba38de8dea45b3a03f5e5.jpg',
         heroBg: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1920&q=80',
-        groom: 'https://images.unsplash.com/photo-1591604466107-ec1e9e2c116f?auto=format&fit=crop&w=600&q=80',
-        bride: 'https://images.unsplash.com/photo-1522673607200-164d1b6fc486?auto=format&fit=crop&w=600&q=80',
-        couple: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80',
+        groom: 'https://i.pinimg.com/736x/5a/0d/d0/5a0dd0e896b4bc0ae57ee5058eed2eed.jpg',
+        bride: 'https://i.pinimg.com/736x/0e/4a/9f/0e4a9f6232ef87d011abda784a6b6db9.jpg',
+        couple: 'https://i.pinimg.com/736x/6b/b8/d7/6bb8d737edecaf20bb03a10f55d9a5a3.jpg',
         roseStrip: 'https://images.unsplash.com/photo-1518709594023-6eab29cb9a7e?auto=format&fit=crop&w=1400&q=80',
-        roseSide: 'https://images.unsplash.com/photo-1462275646964-a0e3386b89d7?auto=format&fit=crop&w=400&q=80',
-        countdownRose: 'https://images.unsplash.com/photo-1452827073306-6d0540200fc7?auto=format&fit=crop&w=500&q=80',
-        venue: 'https://images.unsplash.com/photo-1519167758481-83f29da8c7f3?auto=format&fit=crop&w=700&q=80',
-        dateCard: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=700&q=80',
-        rings: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80',
-        footerRose: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=400&q=80',
+        roseSide: 'https://i.pinimg.com/736x/69/49/2b/69492b41b4348cfa9159f65810e7b1d2.jpg',
+        countdownRose: 'https://i.pinimg.com/736x/07/a5/3b/07a53bb6acfafc568e8e9ed901520eff.jpg',
+        venue: 'https://i.pinimg.com/736x/99/01/c4/9901c46661a4c614c7732f5febd63147.jpg',
+        dateCard: 'https://i.pinimg.com/736x/44/41/39/44413988e383fa2326273673fedb9946.jpg',
+        rings: 'https://i.pinimg.com/736x/fb/0b/7e/fb0b7ed020c320e6c0246727791a09f9.jpg',
+        footerRose: 'https://i.pinimg.com/736x/b6/50/d3/b650d37e260fabada776bace7e0cbf07.jpg',
         story: [
             {
-                src: 'https://images.unsplash.com/photo-1520854221256-17451c0d27f2?auto=format&fit=crop&w=800&q=80',
+                src: 'https://i.pinimg.com/1200x/e0/a8/af/e0a8afd27137eb7070fe09864ef041e6.jpg',
                 caption: 'The proposal',
             },
             {
-                src: 'https://images.unsplash.com/photo-1465495976277-593167db0e7f?auto=format&fit=crop&w=800&q=80',
+                src: 'https://i.pinimg.com/736x/27/b2/8b/27b28bb516e2b91e968fec04360c1999.jpg',
                 caption: 'Together always',
             },
         ],
         gallery: [
             'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80',
-            'https://images.unsplash.com/photo-1522673607200-164d1b6fc486?auto=format&fit=crop&w=700&q=80',
-            'https://images.unsplash.com/photo-1520854221256-17451c0d27f2?auto=format&fit=crop&w=700&q=80',
-            'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=700&q=80',
-            'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=700&q=80',
-            'https://images.unsplash.com/photo-1460978812853-566d610f794b?auto=format&fit=crop&w=700&q=80',
+            'https://i.pinimg.com/736x/e4/73/f4/e473f4bc3ab78a919bb8200f30104b35.jpg',
+            'https://i.pinimg.com/1200x/b6/f9/c7/b6f9c74f5db865d238596bc380c04042.jpg',
+            'https://i.pinimg.com/1200x/39/09/2a/39092aa850b8b9fb1ef48f0b4f93f070.jpg',
+            'https://i.pinimg.com/736x/fa/2d/20/fa2d2096c34769ac07ad6920a02ea3ad.jpg',
+            'https://i.pinimg.com/1200x/19/72/76/197276e81d8e1f3fcd20ceccffbef5ce.jpg',
         ],
     },
 };
@@ -97,7 +97,7 @@ const COPIED_LABEL = 'Link copied ✓';
 const UNLOCK_TIMING = {
     sealBreak: 750,
     curtainClose: 900,
-    curtainHold: 300,
+    curtainHold: 600,
     curtainOpen: 1000,
 };
 
@@ -604,10 +604,10 @@ function tryUnlock(code) {
         // seal.classList.add('seal--opening');
         codeInputsWrap.classList.add('code-success');
         codeError.classList.remove('show');
-        document.body.classList.add('unlocked');
 
         setTimeout(() => {
             playCurtainTransition(() => {
+                document.body.classList.add('unlocked');
                 seal.classList.add('broken');
                 gate.classList.add('hidden');
                 invite.classList.remove('hidden');
@@ -808,12 +808,19 @@ function initReveal() {
 
 rsvpBtn.addEventListener('click', () => {
     const msg = encodeURIComponent(
-        `Hello!\n\nMy name is ______ and I'd love to confirm my attendance at ${CONFIG.groomName} & ${CONFIG.brideName}'s wedding on June 20, 2026.\n\nThank you!`
+        `Hello!\n\nMy name is ______ and I'd love to confirm my attendance at ${CONFIG.groomName} & ${CONFIG.brideName}'s wedding on June 10, 2026.\n\nThank you!`
     );
     window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank', 'noopener');
 });
 
 shareBtn.addEventListener('click', async () => {
+    // Always copy link first!
+    await navigator.clipboard.writeText(window.location.href);
+    shareBtn.textContent = COPIED_LABEL;
+    setTimeout(() => {
+        shareBtn.textContent = SHARE_LABEL;
+    }, 2000);
+
     const shareData = {
         title: `${CONFIG.groomName} & ${CONFIG.brideName} — Wedding`,
         text: `You're invited to our wedding! ${CONFIG.hashtag}`,
@@ -826,11 +833,5 @@ shareBtn.addEventListener('click', async () => {
         } catch (_) {
             /* cancelled */
         }
-    } else {
-        await navigator.clipboard.writeText(window.location.href);
-        shareBtn.textContent = COPIED_LABEL;
-        setTimeout(() => {
-            shareBtn.textContent = SHARE_LABEL;
-        }, 2000);
     }
 });

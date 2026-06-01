@@ -151,7 +151,7 @@ body.unlocked .ambient-blob {
     place-items: center;
     padding: 1.5rem;
     overflow: hidden;
-    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    /* No transition until we hide it explicitly */
 }
 
 .gate.gate--loading {
@@ -2341,7 +2341,7 @@ body.unlocked .ambient-blob {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 55%;
+    width: 51%;
     overflow: hidden;
     transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
     will-change: transform;
