@@ -164,21 +164,17 @@ body.unlocked .ambient-blob {
 .gate-bg {
     position: absolute;
     inset: 0;
+    background-image: url('https://i.pinimg.com/736x/88/2a/8c/882a8c016fa592ba48dca831762f4530.jpg');
     background-size: cover;
     background-position: center;
-    filter: brightness(1.05) saturate(0.85);
+    filter: brightness(1.05) saturate(0.9);
 }
 
 .gate-bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 252, 250, 0.92) 0%,
-        rgba(252, 232, 232, 0.88) 50%,
-        rgba(255, 252, 250, 0.9) 100%
-    );
+    background: rgba(255, 252, 248, 0.35);
 }
 
 .gate-bloom {
@@ -198,16 +194,15 @@ body.unlocked .ambient-blob {
 .gate-card {
     position: relative;
     z-index: 2;
-    display: grid;
-    grid-template-columns: auto 1fr 1.1fr;
-    gap: 1.25rem 2rem;
+    display: flex;
     align-items: center;
-    max-width: 920px;
+    justify-content: center;
+    max-width: 400px;
     width: 100%;
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(14px);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 3rem 2rem;
     box-shadow: 0 24px 60px var(--shadow-md);
     border: 2px solid var(--border);
     animation: cardFloat 5s ease-in-out infinite;
@@ -220,179 +215,191 @@ body.unlocked .ambient-blob {
         cardFloat 5s ease-in-out var(--dur-fade) infinite;
 }
 
-/* Envelope — دخول واحد بدون وميض */
-.envelope {
+@keyframes finalEnvelopeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* EXACT Working Envelope CSS from your code */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.letter-image {
     position: relative;
-    width: 132px;
-    height: 126px;
-    margin: 0 auto;
-    flex-shrink: 0;
-    opacity: 0;
-    transform: translateY(14px);
-    animation: envelopeIn 1s var(--ease-fade) 0.25s forwards;
-    cursor: default;
+    width: 300px;
+    height: 300px;
+    cursor: pointer;
+    z-index: 10;
 }
 
-.envelope .envelope-scene {
-    opacity: 0;
-    transform: translateY(8px);
-    animation:
-        envelopeSceneIn 0.85s var(--ease-smooth) 0.45s forwards,
-        envelopeBreath 5s ease-in-out 1.35s infinite;
-}
-
-.envelope .env-flap-back {
-    transform: rotate(180deg) scaleY(0.92);
-    animation: flapSettle 0.75s var(--ease-smooth) 0.55s forwards;
-}
-
-.envelope .env-paper {
-    opacity: 0;
-    transform: translateX(-50%) translateY(5px);
-    animation: paperIn 0.75s var(--ease-fade) 0.58s forwards;
-}
-
-@keyframes envelopeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes envelopeSceneIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes flapSettle {
-    to {
-        transform: rotate(180deg) scaleY(1);
-    }
-}
-
-@keyframes paperIn {
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-@keyframes envelopeBreath {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-4px);
-    }
-}
-
-@media (hover: hover) {
-    .envelope.motion-hover:hover {
-        transform: translateY(-5px);
-        filter: drop-shadow(0 10px 22px rgba(201, 120, 136, 0.2));
-    }
-
-    .envelope.motion-hover:hover .envelope-scene {
-        animation-play-state: paused;
-    }
-}
-
-/* Pocket sits lower; top padding room lets the flap tip rise without clipping */
-.envelope-scene {
+.animated-mail {
     position: absolute;
-    left: 0;
-    right: 0;
+    height: 225px;
+    width: 300px;
+    transition: transform 0.4s;
+}
+
+.animated-mail .body {
+    position: absolute;
     bottom: 0;
-    height: 96px;
-    filter: drop-shadow(0 10px 20px rgba(74, 48, 56, 0.14));
-}
-
-/* Back flap — rotated 180° (tip up) */
-.env-flap-back {
-    position: absolute;
-    top: -22px;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(180deg, #c97888 0%, #b86b7a 100%);
-    clip-path: polygon(0 0, 50% 100%, 100% 0);
-    border-radius: 4px 4px 0 0;
-    transform: rotate(180deg);
-    transform-origin: 50% 50%;
-    z-index: 1;
-}
-
-/* Main envelope body (pocket) */
-.env-body {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 62px;
-    background: linear-gradient(180deg, #f7e4e9 0%, #efd6dc 100%);
-    border: 2px solid var(--border-strong);
-    border-radius: 0 0 10px 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 150px 300px;
+    border-color: transparent transparent #e8a4b0 transparent;
     z-index: 2;
 }
 
-/* Side wings */
-.env-wing {
+.animated-mail .top-fold {
+    position: absolute;
+    top: 75px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 75px 150px 0 150px;
+    transform-origin: 50% 0%;
+    transition: transform 0.4s 0.4s, z-index 0.2s 0.4s;
+    border-color: #c97888 transparent transparent transparent;
+    z-index: 2;
+}
+
+.animated-mail .back-fold {
     position: absolute;
     bottom: 0;
-    width: 50%;
-    height: 62px;
-    z-index: 3;
+    width: 300px;
+    height: 150px;
+    background: #c97888;
+    z-index: 0;
 }
 
-.env-wing--left {
-    left: 0;
-    background: linear-gradient(145deg, #d18a98 0%, #c97888 100%);
-    clip-path: polygon(0 0, 100% 100%, 0 100%);
-    border-radius: 0 0 0 8px;
-}
-
-.env-wing--right {
-    right: 0;
-    background: linear-gradient(215deg, #c97888 0%, #b86b7a 100%);
-    clip-path: polygon(100% 0, 0 100%, 100% 100%);
-    border-radius: 0 0 8px 0;
-}
-
-/* Letter — centered in the writing area */
-.env-paper {
+.animated-mail .left-fold {
     position: absolute;
-    top: 24px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 75px 0 75px 150px;
+    border-color: transparent transparent transparent #d4899a;
+    z-index: 2;
+}
+
+.animated-mail .right-fold {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 75px 150px 75px 0;
+    border-color: transparent #d4899a transparent transparent;
+    z-index: 2;
+}
+
+/* Fancy Envelope Button on Flap */
+.envelope-button {
+    position: absolute;
+    top: 120px;
     left: 50%;
     transform: translateX(-50%);
-    width: 78%;
-    min-height: 52px;
-    padding: 0.5rem 0.35rem;
-    background: var(--surface);
-    border: 1.5px solid var(--border-strong);
-    border-radius: 4px;
-    opacity: 0;
-    z-index: 5;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(145deg, #5a3d5b, #3a263b);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow:
-        0 4px 12px rgba(74, 48, 56, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    z-index: 10;
+    border: 2px solid #fff;
+    cursor: pointer;
 }
 
-.env-paper p {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 0.88rem;
-    font-weight: 600;
-    font-style: italic;
-    line-height: 1.35;
-    color: var(--rose-text);
-    text-align: center;
-    letter-spacing: 0.03em;
+.envelope-button span {
+    font-size: 32px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
 }
+
+.animated-mail .letter {
+    left: 30px;
+    bottom: 0px;
+    position: absolute;
+    width: 240px;
+    height: 90px;
+    background: white;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.4s 0.2s;
+}
+
+.letter .letter-border {
+    height: 15px;
+    width: 100%;
+    background: repeating-linear-gradient(
+        -45deg,
+        #c97888,
+        #c97888 12px,
+        transparent 12px,
+        transparent 27px
+    );
+}
+
+.letter .letter-title {
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 10px;
+    width: 40%;
+    background: #c97888;
+}
+
+.letter .letter-context {
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 10px;
+    width: 20%;
+    background: #c97888;
+}
+
+.letter .letter-stamp {
+    margin-top: -37px;
+    margin-left: 180px;
+    border-radius: 100%;
+    height: 45px;
+    width: 45px;
+    background: #c97888;
+    opacity: 0.3;
+}
+
+.shadow {
+    display: none;
+}
+
+/* States */
+.letter-image.opened .animated-mail {
+    /* No downward movement! */
+    transform: none;
+}
+
+.letter-image.opened .animated-mail .top-fold {
+    transition: transform 0.4s, z-index 0.2s;
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+.letter-image.opened .animated-mail .letter {
+    height: 270px;
+}
+
+.letter-image.opened .shadow {
+    width: 375px;
+}
+
+
 
 .gate-photo-shine {
     position: absolute;

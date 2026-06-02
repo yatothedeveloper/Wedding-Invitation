@@ -1,7 +1,4 @@
 const CONFIG = {
-    secretCode: '0620',
-    codeHint: 'Hint: our engagement date — 06 / 20',
-
     weddingDate: '2026-06-10T14:00:00+02:00',
     groomName: 'Yahya',
     brideName: 'Khadija',
@@ -81,13 +78,9 @@ const CONFIG = {
 
 const gate = document.getElementById('gate');
 const invite = document.getElementById('invite');
-const seal = document.getElementById('seal');
-const codeInputs = document.querySelectorAll('.code-digit');
-const codeInputsWrap = document.getElementById('code-inputs');
-const codeError = document.getElementById('code-error');
+const envelope = document.getElementById('envelope');
 const rsvpBtn = document.getElementById('rsvp-btn');
 const shareBtn = document.getElementById('share-btn');
-const curtain = document.getElementById('curtain');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const backTop = document.getElementById('back-top');
@@ -177,10 +170,8 @@ function populatePage() {
     const fallback = img.couple;
 
     document.title = `${CONFIG.groomName} & ${CONFIG.brideName} — Wedding Invitation`;
-    document.getElementById('code-hint').textContent = CONFIG.codeHint;
 
-    setBg(document.getElementById('gate-bg'), img.gateBg);
-    bindImage(document.getElementById('gate-couple-img'), img.gateCouple, fallback);
+    // setBg(document.getElementById('gate-bg'), img.gateBg);
 
     setBg(document.getElementById('hero-bg'), img.heroBg);
     bindImage(document.getElementById('img-groom'), img.groom, fallback);
@@ -377,82 +368,12 @@ function initHeroParallax() {
     );
 }
 
-function refreshDigitMotion() {
-    codeInputs.forEach((input) => {
-        const focused = document.activeElement === input;
-        const hasVal = input.value.length > 0;
-
-        input.classList.remove('is-lifted', 'is-filled-rest');
-        if (focused) input.classList.add('is-lifted');
-        else if (hasVal) input.classList.add('is-filled-rest');
-
-        input.classList.toggle('filled', hasVal);
-    });
-}
-
-function initGateFocus() {
-    if (!codeInputsWrap) return;
-
-    codeInputsWrap.addEventListener('animationend', (e) => {
-        if (e.animationName === 'codePanelIn') {
-            codeInputsWrap.classList.add('is-shown');
-        }
-    });
-
-    codeInputs.forEach((input) => {
-        input.addEventListener('animationend', (e) => {
-            if (e.animationName === 'smoothFadeIn') {
-                input.classList.add('is-shown');
-            }
-        });
-
-        input.addEventListener('pointerdown', () => {
-            codeInputsWrap.classList.add('code-inputs--active');
-        });
-
-        input.addEventListener('focus', () => {
-            codeInputsWrap.classList.add('code-inputs--active');
-            requestAnimationFrame(() => refreshDigitMotion());
-        });
-
-        input.addEventListener('blur', () => {
-            requestAnimationFrame(() => {
-                refreshDigitMotion();
-                if (!codeInputsWrap.contains(document.activeElement)) {
-                    codeInputsWrap.classList.remove('code-inputs--active');
-                }
-            });
-        });
-    });
-
-    // Disable removing ignite class so glow stays forever
-    /*
-    seal?.addEventListener('animationend', (e) => {
-        if (e.animationName === 'sealIgnite') {
-            seal.classList.remove('seal--ignite');
-        }
-    });
-    */
-
-    setTimeout(() => {
-        seal?.classList.add('is-shown');
-        codeInputsWrap.classList.add('is-shown');
-        codeInputs.forEach((input) => input.classList.add('is-shown'));
-    }, 2000);
-}
-
 function applyMotionHover() {
     document
         .querySelectorAll(
             '.card, .btn-primary, .btn-ghost, .highlight-item, .timeline-card, .story-chapter, .mosaic-item, .polaroid, .story-slide, .verse blockquote, .note-rings, .back-top, .story-dot'
         )
         .forEach((el) => el.classList.add('motion-hover'));
-}
-
-function pulseDigit(input) {
-    input.classList.add('is-tap');
-    clearTimeout(input._tapTimer);
-    input._tapTimer = setTimeout(() => input.classList.remove('is-tap'), 400);
 }
 
 function initBackTop() {
@@ -469,6 +390,11 @@ function initBackTop() {
 }
 
 function playCurtainTransition(onClosed) {
+    const curtain = document.getElementById('curtain');
+    if (!curtain) {
+        onClosed?.();
+        return;
+    }
     curtain.classList.remove('done', 'is-closing', 'is-closed', 'is-opening', 'open');
     curtain.classList.add('is-active');
 
@@ -518,141 +444,43 @@ function burstConfetti() {
     }
 }
 
-populatePage();
-initSparkles();
-initIntroVideo();
-initHeroParallax();
-initBackTop();
-initGateFocus();
+document.addEventListener('DOMContentLoaded', () => {
+    populatePage();
+    initSparkles();
+    initIntroVideo();
+    initHeroParallax();
+    initBackTop();
+    applyMotionHover();
 
-function getEnteredCode() {
-    return [...codeInputs].map((el) => el.value).join('');
-}
+    // Add envelope click listener to open invite directly!
+    const envelope = document.getElementById('envelope');
+    
+    if (envelope) {
+        envelope.addEventListener('click', () => {
+            envelope.classList.add('opened');
+            
+            // Wait for the envelope animation to finish before curtain!
+            setTimeout(() => {
+                playCurtainTransition(() => {
+                    // Hide the gate and show the invite!
+                    gate.classList.add('hidden');
+                    invite.classList.remove('hidden');
+                    invite.classList.add('invite--live');
+                    window.scrollTo(0, 0);
 
-function updateCodeUI() {
-    const code = getEnteredCode();
-    const len = code.length;
-    const wasReady = seal.classList.contains('seal--ready');
+                    // Start the petals and countdown!
+                    startPetals();
+                    startCountdown();
 
-    seal.style.setProperty('--seal-charge', String(len / 4));
-    seal.classList.toggle('seal--charging', len > 0 && len < 4);
-    seal.classList.toggle('seal--ready', len === 4);
-
-    if (len === 4 && !wasReady) {
-        seal.classList.remove('seal--ignite');
-        void seal.offsetWidth;
-        seal.classList.add('seal--ignite');
-        codeInputsWrap.classList.add('code-complete', 'code-success');
-    }
-
-    if (len < 4) {
-        seal.classList.remove('seal--ignite');
-        codeInputsWrap.classList.remove('code-complete', 'code-success');
-    }
-
-    refreshDigitMotion();
-}
-
-seal.addEventListener('click', () => {
-    const code = getEnteredCode();
-
-    if (code.length !== 4) {
-        seal.classList.add('seal--pressed');
-        setTimeout(() => seal.classList.remove('seal--pressed'), 180);
-        codeInputs[code.length]?.focus() || codeInputs[0]?.focus();
-        return;
-    }
-
-    tryUnlock(code);
-});
-
-document.getElementById('code-form')?.addEventListener('submit', (e) => e.preventDefault());
-
-codeInputs.forEach((input, i) => {
-    input.addEventListener('input', (e) => {
-        const v = e.target.value.replace(/\D/g, '');
-        e.target.value = v.slice(-1);
-        if (v) {
-            pulseDigit(e.target);
-            if (i < codeInputs.length - 1) codeInputs[i + 1].focus();
-        }
-        updateCodeUI();
-    });
-
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') e.preventDefault();
-        if (e.key === 'Backspace' && !input.value && i > 0) codeInputs[i - 1].focus();
-    });
-
-    input.addEventListener('paste', (e) => {
-        e.preventDefault();
-        const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 4);
-        pasted.split('').forEach((ch, j) => {
-            if (codeInputs[j]) {
-                codeInputs[j].value = ch;
-                if (ch) pulseDigit(codeInputs[j]);
-            }
-        });
-        codeInputs[Math.min(pasted.length, 3)]?.focus();
-        updateCodeUI();
-    });
-});
-
-updateCodeUI();
-refreshDigitMotion();
-
-function tryUnlock(code) {
-    if (unlocked) return;
-
-    if (code === CONFIG.secretCode) {
-        unlocked = true;
-        // Don't add seal--opening to prevent style changes
-        // seal.classList.add('seal--opening');
-        codeInputsWrap.classList.add('code-success');
-        codeError.classList.remove('show');
-
-        setTimeout(() => {
-            playCurtainTransition(() => {
-                document.body.classList.add('unlocked');
-                seal.classList.add('broken');
-                gate.classList.add('hidden');
-                invite.classList.remove('hidden');
-                invite.classList.add('invite--live');
-                window.scrollTo(0, 0);
-                startPetals();
-                startCountdown();
-                
-                console.log("=== MAKING REVEALS VISIBLE (DISPLAY BLOCK) ===");
-                const reveals = document.querySelectorAll('.reveal');
-                reveals.forEach((el) => {
-                    el.classList.remove('visible');
-                    console.log("Reset reveal:", el);
+                    // Reset and init reveals!
+                    const reveals = document.querySelectorAll('.reveal');
+                    reveals.forEach((el) => el.classList.remove('visible'));
+                    setTimeout(() => initReveal(), 500);
                 });
-                
-                // Small delay to let invite become live first
-                setTimeout(() => {
-                    console.log("=== CALLING INIT REVEAL ===");
-                    initReveal();
-                }, 500);
-                applyMotionHover();
-            });
-        }, UNLOCK_TIMING.sealBreak);
-    } else {
-        seal.classList.add('seal--nope');
-        setTimeout(() => seal.classList.remove('seal--nope'), 450);
-        codeError.classList.add('show');
-        codeInputsWrap.classList.add('shake');
-        codeInputs.forEach((el) => {
-            el.value = '';
+            }, 800); // Wait for envelope animation
         });
-        updateCodeUI();
-        codeInputs[0].focus();
-        setTimeout(() => {
-            codeInputsWrap.classList.remove('shake');
-            codeError.classList.remove('show');
-        }, 2200);
     }
-}
+});
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -786,9 +614,7 @@ function burstPetals() {
 }
 
 function initReveal() {
-    console.log("=== MANUAL INIT REVEAL ===");
     const blocks = document.querySelectorAll('.reveal');
-    console.log("Reveal blocks found:", blocks.length);
 
     function checkScroll() {
         const windowHeight = window.innerHeight;
@@ -796,20 +622,15 @@ function initReveal() {
             if (block.classList.contains('visible')) return;
 
             const rect = block.getBoundingClientRect();
-            console.log("Checking block:", rect.top, windowHeight);
             
             if (rect.top < windowHeight - 100) {
                 block.classList.add('visible');
-                console.log("Added visible to:", block);
             }
         });
     }
 
     window.addEventListener('scroll', checkScroll);
     checkScroll(); // Check immediately
-    
-    // Also check every 100ms to be 100% sure
-    setInterval(checkScroll, 100);
 }
 
 rsvpBtn.addEventListener('click', () => {
