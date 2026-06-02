@@ -42,7 +42,7 @@ const CONFIG = {
     ],
 
     images: {
-        gateBg: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1920&q=80',
+        gateBg: 'https://i.postimg.cc/nLTH84YR/d6d28908cefad87835246a77e3bbbbc3.jpg',
         gateCouple: 'https://i.pinimg.com/736x/fd/e4/d7/fde4d766a43ba38de8dea45b3a03f5e5.jpg',
         heroBg: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1920&q=80',
         groom: 'https://i.pinimg.com/736x/5a/0d/d0/5a0dd0e896b4bc0ae57ee5058eed2eed.jpg',
