@@ -1,5 +1,5 @@
 /*
- * Project: [اكتب اسم مشروعك هنا]
+ * Project: [Wedding-Invitation]
  * Author: Yahya Magdy
  * License: CC BY-NC 4.0 (Non-Commercial Use Only)
  * 
