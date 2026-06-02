@@ -11,8 +11,8 @@ const CONFIG = {
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=42+Riverside+Drive+New+York+NY',
     rsvpDeadline: 'June 10, 2026',
     whatsapp: '01234567890',
-    instagram: 'yato_developer',
-    instagramLink: 'https://www.instagram.com/yato_developer/',
+    instagram: 'Velora_Studio',
+    instagramLink: 'https://www.instagram.com/_velora.studio_/',
     introVideo: '',
 
     quote: {
