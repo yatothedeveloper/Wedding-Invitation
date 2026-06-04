@@ -1,12 +1,3 @@
-/*
- * Project: [Wedding-Invitation]
- * Author: Yahya Magdy
- * License: CC BY-NC 4.0 (Non-Commercial Use Only)
- * 
- * يمنع استخدام هذا الكود لأغراض تجارية أو بيعه.
- * كافة الحقوق محفوظة © 2026 Yahya Magdy.
- */
-
 const CONFIG = {
     weddingDate: '2026-06-10T14:00:00+02:00',
     groomName: 'Yahya',
