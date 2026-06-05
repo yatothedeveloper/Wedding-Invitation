@@ -1,7 +1,7 @@
 const CONFIG = {
     weddingDate: '2026-06-10T14:00:00+02:00',
-    groomName: 'Yahya',
-    brideName: 'Khadija',
+    groomName: 'Adam',
+    brideName: 'Rawan',
 
     heroDateLine: 'Wednesday · June 10, 2026',
     detailDate: 'Wednesday, June 10, 2026',
